@@ -7,12 +7,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.liar.hacpplestore.database.Users;
 
+import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
+import org.litepal.tablemanager.Connector;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,28 +86,38 @@ public class SignupActivity extends AppCompatActivity {
 					illegalAlert("Password", "You can input 6 to 16 letters or numbers.");
 				} else {
 
+					Log.d("SignActivity", "else inside");
+
 					// TODO: 查库看tel和Email是否存在否则注册失败
 
-//					Users user = new Users();
-//					user.setName(name);
-//					user.setTel(tel);
-//					user.setEmail(email);
-//					user.setPassword(password);
-//					user.save();
+					List<Users> userData = LitePal.select("tel", "email").where("tel = ? or email = ?", tel, email).find(Users.class);
+					Log.e("SignActivity", "ListSize = " + userData.size());
+					if (userData.size() != 0) {     // 如果 size 不为零，则证明有记录，提示该手机号或邮箱已存在
+						existAlert("Tel or Email");
+						Log.e("SignActivity", "inside if");
+					} else {
+						Log.e("SignActivity", "inside else");
+						Users user = new Users();
+						user.setName(name);
+						user.setTel(tel);
+						user.setEmail(email);
+						user.setPassword(password);
+						user.save();
 
-					AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);
-					dialog.setTitle(R.string.app_name);
-					dialog.setMessage("Sign Up succeed. Please login.");
-					dialog.setCancelable(false);
-					dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-							startActivity(intent);
-							finish();
-						}
-					});
-					dialog.show();
+						AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);
+						dialog.setTitle(R.string.app_name);
+						dialog.setMessage("Sign Up succeed. Please login.");
+						dialog.setCancelable(false);
+						dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+								startActivity(intent);
+								finish();
+							}
+						});
+						dialog.show();
+					}
 				}
 			}
 		});
@@ -137,6 +153,26 @@ public class SignupActivity extends AppCompatActivity {
 		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {}
+		});
+		dialog.show();
+	}
+
+	public void existAlert(String item) {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(SignupActivity.this);
+		dialog.setTitle(R.string.app_name);
+		dialog.setMessage("This " + item + " has been exist, try login.");
+		dialog.setCancelable(false);
+		dialog.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {
+				Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
+		dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {}
 		});
 		dialog.show();
 	}

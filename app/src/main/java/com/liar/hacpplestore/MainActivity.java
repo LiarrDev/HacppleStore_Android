@@ -1,6 +1,7 @@
 package com.liar.hacpplestore;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,18 +10,22 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
 	DrawerLayout drawerLayout;
 	NavigationView navigationView;
+	TextView nameNav;
 
-	String name;
-	String email;
-	String password;
+	String name = null;
+	String tel = null;
+	String email = null;
+	String password = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +34,20 @@ public class MainActivity extends AppCompatActivity {
 
 		Intent intent = getIntent();
 		name = intent.getStringExtra("name");
+		tel = intent.getStringExtra("tel");
 		email = intent.getStringExtra("email");
 		password = intent.getStringExtra("password");
 
+		Log.e("===GET===", name + "");
+		Log.e("===GET===", tel + "");
+		Log.e("===GET===", email + "");
+		Log.e("===GET===", password + "");
+
 		drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
 		navigationView = (NavigationView) findViewById(R.id.nav_view);
+		View headerView = navigationView.getHeaderView(0);
+		nameNav = (TextView) headerView.findViewById(R.id.header_name);
+		nameNav.setText(name);
 
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
@@ -53,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
 					case R.id.nav_logout:
 						Intent logoutIntent = new Intent(MainActivity.this, LoginActivity.class);
 						startActivity(logoutIntent);
-						// TODO: 清除 SharePreference 保存的登录状态
+						SharedPreferences.Editor editor = getSharedPreferences("loginData", MODE_PRIVATE).edit();
+						editor.clear();
+						editor.apply();
 						finish();
 						break;
 
