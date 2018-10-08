@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.liar.hacpplestore">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
@@ -12,9 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,9 @@
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".FillOrderActivity"></activity>
+        <activity android:name=".FillOrderActivity" />
+        <activity android:name=".ManageGoodsActivity" />
+        <activity android:name=".EditGoodsActivity"></activity>
     </application>
 
 </manifest>

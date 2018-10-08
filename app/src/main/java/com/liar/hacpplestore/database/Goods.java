@@ -12,6 +12,8 @@ public class Goods extends LitePalSupport {
 
 	String detail;
 
+	byte[] image;
+
 	public String getName() {
 		return name;
 	}
@@ -42,5 +44,13 @@ public class Goods extends LitePalSupport {
 
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 }

@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 	String email = null;
 	String password = null;
 
+	String adminEmail = "admin@admin.com";      // 管理员 Email
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,10 +106,16 @@ public class MainActivity extends AppCompatActivity {
 		macImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+				if (email.equals(adminEmail)) {     // 管理员则打开管理页面
+					Intent intent = new Intent(MainActivity.this, ManageGoodsActivity.class);
+					intent.putExtra("type", "Mac");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //				intent.putExtra("mac", "mac");
 //				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
-				startActivity(intent);
+					startActivity(intent);
+				}
 			}
 		});
 
@@ -169,6 +177,4 @@ public class MainActivity extends AppCompatActivity {
 			super.onBackPressed();
 		}
 	}
-
-
 }
