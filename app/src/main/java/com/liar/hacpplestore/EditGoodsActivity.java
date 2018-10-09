@@ -33,7 +33,10 @@ import android.widget.Toast;
 
 import com.liar.hacpplestore.database.Goods;
 
+import org.litepal.LitePal;
+
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 public class EditGoodsActivity extends AppCompatActivity {
 
@@ -100,12 +103,16 @@ public class EditGoodsActivity extends AppCompatActivity {
 		goodsPriceEdit = (EditText) findViewById(R.id.goods_price);
 		goodsDetailEdit = (EditText) findViewById(R.id.goods_detail);
 
-		// 根据传过来的 action 设置 不同的显示和操作逻辑
-		if (action.equals("add")) {
-			// TODO: ADD 的逻辑
-
-		} else if (action.equals("edit")) {
-			// TODO: EDIT 的逻辑
+		if (action.equals("edit")) {        // 如果传过来的 action 为 edit，则需要把数据库中的内容显示在上面
+			List<Goods> goods = LitePal.where("name = ?", intent.getStringExtra("goods_name")).find(Goods.class);
+			for (Goods good: goods) {
+				goodsNameEdit.setText(good.getName());
+				goodsTypeEdit.setText(good.getType());
+				goodsPriceEdit.setText(good.getPrice());
+				goodsDetailEdit.setText(good.getDetail());
+				goodsImg.setImageBitmap(BitmapFactory.decodeByteArray(good.getImage(), 0, good.getImage().length));
+			}
+			goodsNameEdit.setEnabled(false);
 		}
 	}
 
@@ -221,23 +228,13 @@ public class EditGoodsActivity extends AppCompatActivity {
 				break;
 
 			case R.id.done:
-				// TODO: 把数据提交到数据库中，用if区分action是add还是edit
-
 				goodsName = goodsNameEdit.getText().toString();
 				goodsPrice = goodsPriceEdit.getText().toString();
 				goodsDetail = goodsDetailEdit.getText().toString();
 
 				if (action.equals("add")) {
 					if (TextUtils.isEmpty(goodsNameEdit.getText()) || TextUtils.isEmpty(goodsPriceEdit.getText()) || TextUtils.isEmpty(goodsDetailEdit.getText())) {        // 不能有空项
-						AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-						dialog.setTitle(R.string.app_name);
-						dialog.setMessage("Please make sure that you've complete each item.");
-						dialog.setCancelable(false);
-						dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {}
-						});
-						dialog.show();
+						emptyAlert();
 					} else if (isImageEmpty()) {        // 必须上传图片
 						AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 						dialog.setTitle(R.string.app_name);
@@ -248,6 +245,42 @@ public class EditGoodsActivity extends AppCompatActivity {
 							public void onClick(DialogInterface dialogInterface, int i) {}
 						});
 						dialog.show();
+					} else {        // 开始数据库操作
+						List<Goods> goodsData = LitePal.select("name").where("name = ?", goodsName).find(Goods.class);
+						if (goodsData.size() != 0) {        // 如果 size 不为零，则证明该商品已存在，给出提示
+							AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+							dialog.setTitle(R.string.app_name);
+							dialog.setMessage("This commodity has been exist.");
+							dialog.setCancelable(false);
+							dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialogInterface, int i) {}
+							});
+							dialog.show();
+						} else {        // 否则即可存库
+							goodsImg.setDrawingCacheEnabled(true);
+							Bitmap bitmap = Bitmap.createBitmap(goodsImg.getDrawingCache());        // 获取到 Bitmap 图片
+
+							ByteArrayOutputStream stream = new ByteArrayOutputStream();
+							bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+							image = stream.toByteArray();
+
+							Goods goods = new Goods();
+							goods.setName(goodsName);
+							goods.setType(type);
+							goods.setPrice(goodsPrice);
+							goods.setDetail(goodsDetail);
+							goods.setImage(image);
+							goods.save();
+
+							goodsImg.setDrawingCacheEnabled(false);
+							Toast.makeText(this, "Succeed", Toast.LENGTH_LONG).show();
+							finish();
+						}
+					}
+				} else if (action.equals("edit")) {
+					if (TextUtils.isEmpty(goodsPriceEdit.getText()) || TextUtils.isEmpty(goodsDetailEdit.getText())) {
+						emptyAlert();
 					} else {
 						goodsImg.setDrawingCacheEnabled(true);
 						Bitmap bitmap = Bitmap.createBitmap(goodsImg.getDrawingCache());        // 获取到 Bitmap 图片
@@ -257,19 +290,15 @@ public class EditGoodsActivity extends AppCompatActivity {
 						image = stream.toByteArray();
 
 						Goods goods = new Goods();
-						goods.setName(goodsName);
-						goods.setType(type);
+						goods.setImage(image);
 						goods.setPrice(goodsPrice);
 						goods.setDetail(goodsDetail);
-						goods.setImage(image);
-						goods.save();
+						goods.updateAll("name = ?", goodsName);
 
 						goodsImg.setDrawingCacheEnabled(false);
 						Toast.makeText(this, "Succeed", Toast.LENGTH_LONG).show();
 						finish();
 					}
-				} else if (action.equals("edit")) {
-
 				}
 				break;
 
@@ -286,5 +315,17 @@ public class EditGoodsActivity extends AppCompatActivity {
 		Drawable.ConstantState defaultState = getResources().getDrawable(R.drawable.ic_logo).getConstantState();
 		Drawable.ConstantState state = goodsImg.getDrawable().getConstantState();
 		return defaultState.equals(state);
+	}
+
+	public void emptyAlert() {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle(R.string.app_name);
+		dialog.setMessage("Please make sure that you've complete each item.");
+		dialog.setCancelable(false);
+		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {}
+		});
+		dialog.show();
 	}
 }

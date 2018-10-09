@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 				switch (item.getItemId()) {
 					case R.id.nav_orders:
-						Intent orderIntent = new Intent(MainActivity.this, SignupActivity.class);
+						Intent orderIntent = new Intent(MainActivity.this, FillOrderActivity.class);
 						startActivity(orderIntent);
 						break;
 
@@ -122,30 +122,64 @@ public class MainActivity extends AppCompatActivity {
 		iPhoneImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-				startActivity(intent);
+				if (email.equals(adminEmail)) {     // 管理员则打开管理页面
+					Intent intent = new Intent(MainActivity.this, ManageGoodsActivity.class);
+					intent.putExtra("type", "iPhone");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//				intent.putExtra("mac", "mac");
+//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					startActivity(intent);
+				}
 			}
 		});
 
 		iPadImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, FillOrderActivity.class);
-				startActivity(intent);
+				if (email.equals(adminEmail)) {     // 管理员则打开管理页面
+					Intent intent = new Intent(MainActivity.this, ManageGoodsActivity.class);
+					intent.putExtra("type", "iPad");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//				intent.putExtra("mac", "mac");
+//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					startActivity(intent);
+				}
 			}
 		});
 
 		watchImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				if (email.equals(adminEmail)) {     // 管理员则打开管理页面
+					Intent intent = new Intent(MainActivity.this, ManageGoodsActivity.class);
+					intent.putExtra("type", "Watch");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//				intent.putExtra("mac", "mac");
+//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					startActivity(intent);
+				}
 			}
 		});
 
 		accessoriesImg.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				if (email.equals(adminEmail)) {     // 管理员则打开管理页面
+					Intent intent = new Intent(MainActivity.this, ManageGoodsActivity.class);
+					intent.putExtra("type", "Accessories");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//				intent.putExtra("mac", "mac");
+//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					startActivity(intent);
+				}
 			}
 		});
 

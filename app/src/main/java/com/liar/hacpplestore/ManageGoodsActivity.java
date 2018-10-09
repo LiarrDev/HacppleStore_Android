@@ -73,6 +73,7 @@ public class ManageGoodsActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 
+		// 在这里进行加载是为了及时更新页面数据
 		initGoodsItem();
 		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.manage_goods_recycler);
 		GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -83,7 +84,7 @@ public class ManageGoodsActivity extends AppCompatActivity {
 
 	private void initGoodsItem() {
 		goodsItemList.clear();
-		List<Goods> goods = LitePal.findAll(Goods.class);
+		List<Goods> goods = LitePal.where("type = ?", title).find(Goods.class);
 		for (Goods good: goods) {
 			GoodsItem goodsItem = new GoodsItem(good.getName(), good.getImage());
 			goodsItemList.add(goodsItem);

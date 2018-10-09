@@ -1,6 +1,7 @@
 package com.liar.hacpplestore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +45,19 @@ public class GoodsItemAdapter extends RecyclerView.Adapter<GoodsItemAdapter.View
 			mContext = parent.getContext();
 		}
 		View view = LayoutInflater.from(mContext).inflate(R.layout.goods_item, parent, false);
-		return new ViewHolder(view);
+		final ViewHolder holder = new ViewHolder(view);
+		holder.cardView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				int position = holder.getAdapterPosition();
+				GoodsItem goodsItem = mGoodsItemList.get(position);
+				Intent intent = new Intent(mContext, EditGoodsActivity.class);
+				intent.putExtra("goods_name", goodsItem.getName());
+				intent.putExtra("action", "edit");
+				mContext.startActivity(intent);
+			}
+		});
+		return holder;
 	}
 
 	@Override
