@@ -4,12 +4,25 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.liar.hacpplestore.database.Goods;
+
+import org.litepal.LitePal;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ManageGoodsActivity extends AppCompatActivity {
+
+	private List<GoodsItem> goodsItemList = new ArrayList<>();
+
+	private GoodsItemAdapter adapter;
 
 	String title;
 
@@ -56,5 +69,24 @@ public class ManageGoodsActivity extends AppCompatActivity {
 		return true;
 	}
 
-	// TODO: 查看生命周期，是否在onResume中查库显示，为了能够及时刷新
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		initGoodsItem();
+		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.manage_goods_recycler);
+		GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+		recyclerView.setLayoutManager(layoutManager);
+		adapter = new GoodsItemAdapter(goodsItemList);
+		recyclerView.setAdapter(adapter);
+	}
+
+	private void initGoodsItem() {
+		goodsItemList.clear();
+		List<Goods> goods = LitePal.findAll(Goods.class);
+		for (Goods good: goods) {
+			GoodsItem goodsItem = new GoodsItem(good.getName(), good.getImage());
+			goodsItemList.add(goodsItem);
+		}
+	}
 }

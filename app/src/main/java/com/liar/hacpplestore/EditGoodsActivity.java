@@ -3,11 +3,13 @@ package com.liar.hacpplestore;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
@@ -16,16 +18,22 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.liar.hacpplestore.database.Goods;
+
+import java.io.ByteArrayOutputStream;
 
 public class EditGoodsActivity extends AppCompatActivity {
 
@@ -39,14 +47,23 @@ public class EditGoodsActivity extends AppCompatActivity {
 	ImageView goodsImg;
 	AppCompatButton upload;
 
+	String type;        // 用来记录商品的 Type，可用于显示在 Title 上，以及存进数据库中
+	String action;      // 用来记录管理员的操作，当为 add 时，则表示添加操作，当为 edit 时，则表示更新操作
+
+	byte[] image;       // 用于存储商品图片
+
+	String goodsName;
+	String goodsPrice;
+	String goodsDetail;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_goods);
 
 		Intent intent = getIntent();
-		String type = intent.getStringExtra("type");
-		String action = intent.getStringExtra("action");
+		type = intent.getStringExtra("type");
+		action = intent.getStringExtra("action");
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.edit_goods_toolbar);
 		// 根据传过来的 action 设置 Toolbar 的 Title
@@ -83,18 +100,18 @@ public class EditGoodsActivity extends AppCompatActivity {
 		goodsPriceEdit = (EditText) findViewById(R.id.goods_price);
 		goodsDetailEdit = (EditText) findViewById(R.id.goods_detail);
 
-		String goodsName = goodsNameEdit.getText().toString();
-		String goodsPrice = goodsPriceEdit.getText().toString();
-		String goodsDetail = goodsDetailEdit.getText().toString();
-
 		// 根据传过来的 action 设置 不同的显示和操作逻辑
 		if (action.equals("add")) {
 			// TODO: ADD 的逻辑
+
 		} else if (action.equals("edit")) {
 			// TODO: EDIT 的逻辑
 		}
 	}
 
+	/**
+	 * 打开相册
+	 */
 	private void openAlbum() {
 		Intent intent = new Intent("android.intent.action.GET_CONTENT");
 		intent.setType("image/*");
@@ -205,11 +222,69 @@ public class EditGoodsActivity extends AppCompatActivity {
 
 			case R.id.done:
 				// TODO: 把数据提交到数据库中，用if区分action是add还是edit
-				finish();
+
+				goodsName = goodsNameEdit.getText().toString();
+				goodsPrice = goodsPriceEdit.getText().toString();
+				goodsDetail = goodsDetailEdit.getText().toString();
+
+				if (action.equals("add")) {
+					if (TextUtils.isEmpty(goodsNameEdit.getText()) || TextUtils.isEmpty(goodsPriceEdit.getText()) || TextUtils.isEmpty(goodsDetailEdit.getText())) {        // 不能有空项
+						AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+						dialog.setTitle(R.string.app_name);
+						dialog.setMessage("Please make sure that you've complete each item.");
+						dialog.setCancelable(false);
+						dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {}
+						});
+						dialog.show();
+					} else if (isImageEmpty()) {        // 必须上传图片
+						AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+						dialog.setTitle(R.string.app_name);
+						dialog.setMessage("Please upload a picture.");
+						dialog.setCancelable(false);
+						dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i) {}
+						});
+						dialog.show();
+					} else {
+						goodsImg.setDrawingCacheEnabled(true);
+						Bitmap bitmap = Bitmap.createBitmap(goodsImg.getDrawingCache());        // 获取到 Bitmap 图片
+
+						ByteArrayOutputStream stream = new ByteArrayOutputStream();
+						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+						image = stream.toByteArray();
+
+						Goods goods = new Goods();
+						goods.setName(goodsName);
+						goods.setType(type);
+						goods.setPrice(goodsPrice);
+						goods.setDetail(goodsDetail);
+						goods.setImage(image);
+						goods.save();
+
+						goodsImg.setDrawingCacheEnabled(false);
+						Toast.makeText(this, "Succeed", Toast.LENGTH_LONG).show();
+						finish();
+					}
+				} else if (action.equals("edit")) {
+
+				}
 				break;
 
 			default:
 		}
 		return true;
+	}
+
+	/**
+	 * 用于判断图片是否有上传
+	 * @return 如果上传了则为 false，未上传则为 true
+	 */
+	private boolean isImageEmpty() {
+		Drawable.ConstantState defaultState = getResources().getDrawable(R.drawable.ic_logo).getConstantState();
+		Drawable.ConstantState state = goodsImg.getDrawable().getConstantState();
+		return defaultState.equals(state);
 	}
 }
