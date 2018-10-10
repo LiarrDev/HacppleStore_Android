@@ -85,11 +85,6 @@ public class SignupActivity extends AppCompatActivity {
 				} else if (!matcherPassword.matches()) {
 					illegalAlert("Password", "You can input 6 to 16 letters or numbers.");
 				} else {
-
-					Log.d("SignActivity", "else inside");
-
-					// TODO: 查库看tel和Email是否存在否则注册失败
-
 					List<Users> userData = LitePal.select("tel", "email").where("tel = ? or email = ?", tel, email).find(Users.class);
 					Log.e("SignActivity", "ListSize = " + userData.size());
 					if (userData.size() != 0) {     // 如果 size 不为零，则证明有记录，提示该手机号或邮箱已存在
@@ -138,10 +133,7 @@ public class SignupActivity extends AppCompatActivity {
 		dialog.setTitle(R.string.app_name);
 		dialog.setMessage(item + " is empty.");
 		dialog.setCancelable(false);
-		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {}
-		});
+		dialog.setPositiveButton("OK", null);
 		dialog.show();
 	}
 
@@ -150,10 +142,7 @@ public class SignupActivity extends AppCompatActivity {
 		dialog.setTitle(R.string.app_name);
 		dialog.setMessage("Illegal " + item + ". " + errorDetail);
 		dialog.setCancelable(false);
-		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {}
-		});
+		dialog.setPositiveButton("OK", null);
 		dialog.show();
 	}
 
@@ -170,10 +159,7 @@ public class SignupActivity extends AppCompatActivity {
 				finish();
 			}
 		});
-		dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {}
-		});
+		dialog.setNegativeButton("Cancel", null);
 		dialog.show();
 	}
 }

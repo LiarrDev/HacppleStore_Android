@@ -154,10 +154,7 @@ public class LoginActivity extends AppCompatActivity {
 		dialog.setTitle(R.string.app_name);
 		dialog.setMessage(item + " is empty.");
 		dialog.setCancelable(false);
-		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {}
-		});
+		dialog.setPositiveButton("OK", null);
 		dialog.show();
 	}
 
@@ -166,10 +163,7 @@ public class LoginActivity extends AppCompatActivity {
 		dialog.setTitle(R.string.app_name);
 		dialog.setMessage("Your Email or Password must be wrong. Please check again.");
 		dialog.setCancelable(false);
-		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {}
-		});
+		dialog.setPositiveButton("OK", null);
 		dialog.show();
 	}
 }

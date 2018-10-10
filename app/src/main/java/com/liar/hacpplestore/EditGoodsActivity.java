@@ -243,10 +243,7 @@ public class EditGoodsActivity extends AppCompatActivity {
 						dialog.setTitle(R.string.app_name);
 						dialog.setMessage("Please upload a picture.");
 						dialog.setCancelable(false);
-						dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogInterface, int i) {}
-						});
+						dialog.setPositiveButton("OK", null);
 						dialog.show();
 					} else {        // 开始数据库操作
 						List<Goods> goodsData = LitePal.select("name").where("name = ?", goodsName).find(Goods.class);
@@ -255,10 +252,7 @@ public class EditGoodsActivity extends AppCompatActivity {
 							dialog.setTitle(R.string.app_name);
 							dialog.setMessage("This commodity has been exist.");
 							dialog.setCancelable(false);
-							dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialogInterface, int i) {}
-							});
+							dialog.setPositiveButton("OK", null);
 							dialog.show();
 						} else {        // 否则即可存库
 							goodsImg.setDrawingCacheEnabled(true);
@@ -342,10 +336,7 @@ public class EditGoodsActivity extends AppCompatActivity {
 		dialog.setTitle(R.string.app_name);
 		dialog.setMessage("Please make sure that you've complete each item.");
 		dialog.setCancelable(false);
-		dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialogInterface, int i) {}
-		});
+		dialog.setPositiveButton("OK", null);
 		dialog.show();
 	}
 }
