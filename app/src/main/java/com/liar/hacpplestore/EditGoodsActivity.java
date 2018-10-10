@@ -217,21 +217,24 @@ public class EditGoodsActivity extends AppCompatActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.edit_goods_toolbar, menu);
+		if (action.equals("add")) {
+			menu.findItem(R.id.delete).setVisible(false);
+		}
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		goodsName = goodsNameEdit.getText().toString();
+		goodsPrice = goodsPriceEdit.getText().toString();
+		goodsDetail = goodsDetailEdit.getText().toString();
+
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				finish();
 				break;
 
 			case R.id.done:
-				goodsName = goodsNameEdit.getText().toString();
-				goodsPrice = goodsPriceEdit.getText().toString();
-				goodsDetail = goodsDetailEdit.getText().toString();
-
 				if (action.equals("add")) {
 					if (TextUtils.isEmpty(goodsNameEdit.getText()) || TextUtils.isEmpty(goodsPriceEdit.getText()) || TextUtils.isEmpty(goodsDetailEdit.getText())) {        // 不能有空项
 						emptyAlert();
@@ -300,6 +303,23 @@ public class EditGoodsActivity extends AppCompatActivity {
 						finish();
 					}
 				}
+				break;
+
+			case R.id.delete:
+				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle(R.string.app_name);
+				dialog.setMessage("Delete this commodity?");
+				dialog.setCancelable(false);
+				dialog.setNegativeButton("Cancel", null);
+				dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						LitePal.deleteAll(Goods.class, "name = ?", goodsName);
+						Toast.makeText(EditGoodsActivity.this, "Succeed", Toast.LENGTH_LONG).show();
+						finish();
+					}
+				});
+				dialog.show();
 				break;
 
 			default:
