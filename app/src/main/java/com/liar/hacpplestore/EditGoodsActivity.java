@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.liar.hacpplestore.database.Goods;
 
 import org.litepal.LitePal;
@@ -110,7 +111,8 @@ public class EditGoodsActivity extends AppCompatActivity {
 				goodsTypeEdit.setText(good.getType());
 				goodsPriceEdit.setText(good.getPrice());
 				goodsDetailEdit.setText(good.getDetail());
-				goodsImg.setImageBitmap(BitmapFactory.decodeByteArray(good.getImage(), 0, good.getImage().length));
+//				goodsImg.setImageBitmap(BitmapFactory.decodeByteArray(good.getImage(), 0, good.getImage().length));
+				Glide.with(this).load(good.getImage()).into(goodsImg);
 			}
 			goodsNameEdit.setEnabled(false);
 		}

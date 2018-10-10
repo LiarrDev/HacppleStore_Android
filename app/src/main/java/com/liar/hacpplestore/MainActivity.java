@@ -111,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
 					intent.putExtra("type", "Mac");
 					startActivity(intent);
 				} else {
-					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//				intent.putExtra("mac", "mac");
-//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					Intent intent = new Intent(MainActivity.this, ShowGoodsActivity.class);
+					intent.putExtra("type", "Mac");
+					intent.putExtra("email", email);    // 用户则把其 Email 发过去
 					startActivity(intent);
 				}
 			}
@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
 					intent.putExtra("type", "iPhone");
 					startActivity(intent);
 				} else {
-					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//				intent.putExtra("mac", "mac");
-//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					Intent intent = new Intent(MainActivity.this, ShowGoodsActivity.class);
+					intent.putExtra("type", "iPhone");
+					intent.putExtra("email", email);
 					startActivity(intent);
 				}
 			}
@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
 					intent.putExtra("type", "iPad");
 					startActivity(intent);
 				} else {
-					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//				intent.putExtra("mac", "mac");
-//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					Intent intent = new Intent(MainActivity.this, ShowGoodsActivity.class);
+					intent.putExtra("type", "iPad");
+					intent.putExtra("email", email);
 					startActivity(intent);
 				}
 			}
@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
 					intent.putExtra("type", "Watch");
 					startActivity(intent);
 				} else {
-					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//				intent.putExtra("mac", "mac");
-//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					Intent intent = new Intent(MainActivity.this, ShowGoodsActivity.class);
+					intent.putExtra("type", "Watch");
+					intent.putExtra("email", email);
 					startActivity(intent);
 				}
 			}
@@ -175,9 +175,9 @@ public class MainActivity extends AppCompatActivity {
 					intent.putExtra("type", "Accessories");
 					startActivity(intent);
 				} else {
-					Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//				intent.putExtra("mac", "mac");
-//				// 传过去之后根据这个值查数据库拿信息，然后把这个值set到Toolbar上
+					Intent intent = new Intent(MainActivity.this, ShowGoodsActivity.class);
+					intent.putExtra("type", "Accessories");
+					intent.putExtra("email", email);
 					startActivity(intent);
 				}
 			}

@@ -27,6 +27,8 @@
         <activity android:name=".FillOrderActivity" />
         <activity android:name=".ManageGoodsActivity" />
         <activity android:name=".EditGoodsActivity" />
+        <activity android:name=".ShowGoodsActivity" />
+        <activity android:name=".GoodsDetailsActivity"></activity>
     </application>
 
 </manifest>
