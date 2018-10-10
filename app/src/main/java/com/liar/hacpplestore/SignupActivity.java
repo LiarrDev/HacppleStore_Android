@@ -87,9 +87,7 @@ public class SignupActivity extends AppCompatActivity {
 					Log.e("SignActivity", "ListSize = " + userData.size());
 					if (userData.size() != 0) {     // 如果 size 不为零，则证明有记录，提示该手机号或邮箱已存在
 						existAlert("Tel or Email");
-						Log.e("SignActivity", "inside if");
 					} else {
-						Log.e("SignActivity", "inside else");
 						Users user = new Users();
 						user.setName(name);
 						user.setTel(tel);

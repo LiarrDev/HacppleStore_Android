@@ -4,19 +4,23 @@ import org.litepal.crud.LitePalSupport;
 
 public class Orders extends LitePalSupport {
 
-	String orderNum;         // 采用邮箱+时间yyyyMMddHHmmss的方式记录
+	private String orderNum;         // 采用邮箱+时间yyyyMMddHHmmss的方式记录
 
-	String goodsName;
+	private String goodsName;
 
-	String price;
+	private String goodsType;
 
-	String name;
+	private String goodsPrice;
 
-	String tel;
+	private String userEmail;
 
-	String address;
+	private String buyerName;
 
-	String transactionStatus;       // 交易状态：交易取消Cancelled，交易完成Completed，交易中Trading
+	private String buyerTel;
+
+	private String buyerAddress;
+
+	private String transactionStatus;       // 交易状态：交易取消Cancelled，交易完成Completed，交易中Trading
 
 	public String getOrderNum() {
 		return orderNum;
@@ -34,36 +38,52 @@ public class Orders extends LitePalSupport {
 		this.goodsName = goodsName;
 	}
 
-	public String getPrice() {
-		return price;
+	public String getGoodsType() {
+		return goodsType;
 	}
 
-	public void setPrice(String price) {
-		this.price = price;
+	public void setGoodsType(String goodsType) {
+		this.goodsType = goodsType;
 	}
 
-	public String getName() {
-		return name;
+	public String getGoodsPrice() {
+		return goodsPrice;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setGoodsPrice(String goodsPrice) {
+		this.goodsPrice = goodsPrice;
 	}
 
-	public String getTel() {
-		return tel;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setTel(String tel) {
-		this.tel = tel;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getBuyerName() {
+		return buyerName;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setBuyerName(String buyerName) {
+		this.buyerName = buyerName;
+	}
+
+	public String getBuyerTel() {
+		return buyerTel;
+	}
+
+	public void setBuyerTel(String buyerTel) {
+		this.buyerTel = buyerTel;
+	}
+
+	public String getBuyerAddress() {
+		return buyerAddress;
+	}
+
+	public void setBuyerAddress(String buyerAddress) {
+		this.buyerAddress = buyerAddress;
 	}
 
 	public String getTransactionStatus() {

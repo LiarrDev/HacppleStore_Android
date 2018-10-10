@@ -25,6 +25,8 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 	String email;
 
 	String goodsPrice;
+	byte[] goodsImg;
+	String goodsType;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,9 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 		collapsingToolbar.setTitle(goodsName);
 		List<Goods> goods = LitePal.where("name = ?", goodsName).find(Goods.class);
 		for (Goods good: goods) {
-			Glide.with(this).load(good.getImage()).into(goodsImageView);
+			goodsType = good.getType();
+			goodsImg = good.getImage();
+			Glide.with(this).load(goodsImg).into(goodsImageView);
 			goodsPrice = good.getPrice();
 			goodsPriceText.setText("￥ " + goodsPrice);
 			goodsDetailText.setText(good.getDetail());
@@ -63,6 +67,8 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 				Intent intent = new Intent(GoodsDetailsActivity.this, FillOrderActivity.class);
 				intent.putExtra("goods_name", goodsName);
 				intent.putExtra("goods_price", goodsPrice);
+				intent.putExtra("goods_img", goodsImg);
+				intent.putExtra("goods_type", goodsType);
 				intent.putExtra("email", email);
 				startActivity(intent);
 			}
