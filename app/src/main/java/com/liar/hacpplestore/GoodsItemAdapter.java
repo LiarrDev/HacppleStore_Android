@@ -58,7 +58,6 @@ public class GoodsItemAdapter extends RecyclerView.Adapter<GoodsItemAdapter.View
 				int position = holder.getAdapterPosition();
 				GoodsItem goodsItem = mGoodsItemList.get(position);
 
-				// TODO: 判断是用户还是管理员，用户的话还需把email传过去，并打开商品详情页面
 				if (email.equals("")) {     // 管理员
 					Intent intent = new Intent(mContext, EditGoodsActivity.class);
 					intent.putExtra("goods_name", goodsItem.getName());

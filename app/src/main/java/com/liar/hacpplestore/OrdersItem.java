@@ -6,9 +6,12 @@ public class OrdersItem {
 
 	private String transactionStatus;
 
-	public OrdersItem(String goodsName, String transactionStatus) {
+	private String orderNum;
+
+	public OrdersItem(String goodsName, String transactionStatus, String orderNum) {
 		this.goodsName = goodsName;
 		this.transactionStatus = transactionStatus;
+		this.orderNum = orderNum;
 	}
 
 	public String getGoodsName() {
@@ -17,5 +20,9 @@ public class OrdersItem {
 
 	public String getTransactionStatus() {
 		return transactionStatus;
+	}
+
+	public String getOrderNum() {
+		return orderNum;
 	}
 }

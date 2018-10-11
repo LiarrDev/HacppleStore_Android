@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ public class OrdersItemAdapter extends RecyclerView.Adapter<OrdersItemAdapter.Vi
 	private Context mContext;
 
 	private List<OrdersItem> mOrdersItemList;
+
+	String adminEmail = "admin@admin.com";      // 管理员 Email
 
 	String email = "";
 
@@ -55,12 +58,14 @@ public class OrdersItemAdapter extends RecyclerView.Adapter<OrdersItemAdapter.Vi
 				int position = holder.getAdapterPosition();
 				OrdersItem ordersItem = mOrdersItemList.get(position);
 
-				if (email.equals("")) {         // 管理员
-
+				if (email.equals(adminEmail)) {         // 管理员
+					Intent intent = new Intent(mContext, ManageOrderDetailsActivity.class);
+					intent.putExtra("order_num", ordersItem.getOrderNum());
+					mContext.startActivity(intent);
 				} else {            // 用户
-					Intent intent = new Intent(mContext, OrdersActivity.class);
-					intent.putExtra("email", email);
-//					intent.putExtra("order_num", orderNum);
+					Intent intent = new Intent(mContext, OrdersDetailsActivity.class);
+//					intent.putExtra("email", email);
+					intent.putExtra("order_num", ordersItem.getOrderNum());
 					mContext.startActivity(intent);
 				}
 			}

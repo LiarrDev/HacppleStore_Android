@@ -29,7 +29,9 @@
         <activity android:name=".EditGoodsActivity" />
         <activity android:name=".ShowGoodsActivity" />
         <activity android:name=".GoodsDetailsActivity" />
-        <activity android:name=".OrdersActivity"></activity>
+        <activity android:name=".OrdersActivity" />
+        <activity android:name=".OrdersDetailsActivity" />
+        <activity android:name=".ManageOrderDetailsActivity"></activity>
     </application>
 
 </manifest>

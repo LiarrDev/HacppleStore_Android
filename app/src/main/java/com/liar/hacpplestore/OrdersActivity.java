@@ -67,6 +67,7 @@ public class OrdersActivity extends AppCompatActivity {
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
 		adapter = new OrdersItemAdapter(ordersItemList);
+		adapter.setEmail(email);
 		recyclerView.setAdapter(adapter);
 	}
 
@@ -75,7 +76,7 @@ public class OrdersActivity extends AppCompatActivity {
 		if (email.equals(adminEmail)) {     // 管理员，查询所有订单记录显示
 			List<Orders> orders = LitePal.findAll(Orders.class);
 			for (Orders order: orders) {
-				OrdersItem ordersItem = new OrdersItem(order.getGoodsName(), order.getTransactionStatus());
+				OrdersItem ordersItem = new OrdersItem(order.getGoodsName(), order.getTransactionStatus(), order.getOrderNum());
 				Log.e("===ORDER===", order.getGoodsName());
 				Log.e("===ORDER===", order.getTransactionStatus());
 				ordersItemList.add(ordersItem);
@@ -83,7 +84,7 @@ public class OrdersActivity extends AppCompatActivity {
 		} else {        // 用户，根据 Email 查询该用户记录显示
 			List<Orders> orders = LitePal.select("goodsName", "transactionStatus", "orderNum").where("userEmail = ?", email).order("transactionTime desc").find(Orders.class);
 			for (Orders order: orders) {
-				OrdersItem ordersItem = new OrdersItem(order.getGoodsName(), order.getTransactionStatus());
+				OrdersItem ordersItem = new OrdersItem(order.getGoodsName(), order.getTransactionStatus(), order.getOrderNum());
 				Log.e("===ORDER===", order.getGoodsName());
 				Log.e("===ORDER===", order.getTransactionStatus());
 				Log.e("===ORDER===", order.getOrderNum());
