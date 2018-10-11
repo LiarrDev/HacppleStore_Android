@@ -20,6 +20,8 @@ public class Orders extends LitePalSupport {
 
 	private String buyerAddress;
 
+	private String transactionTime;     // 交易时间
+
 	private String transactionStatus;       // 交易状态：交易取消Cancelled，交易完成Completed，交易中Trading
 
 	public String getOrderNum() {
@@ -84,6 +86,14 @@ public class Orders extends LitePalSupport {
 
 	public void setBuyerAddress(String buyerAddress) {
 		this.buyerAddress = buyerAddress;
+	}
+
+	public String getTransactionTime() {
+		return transactionTime;
+	}
+
+	public void setTransactionTime(String transactionTime) {
+		this.transactionTime = transactionTime;
 	}
 
 	public String getTransactionStatus() {

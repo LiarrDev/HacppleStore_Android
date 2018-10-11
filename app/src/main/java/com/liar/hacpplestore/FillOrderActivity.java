@@ -92,9 +92,10 @@ public class FillOrderActivity extends AppCompatActivity {
 					illegalAlert("Tel", "Please input a right Tel with 11 numbers.");
 				} else {
 					Date date = new Date();
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-					String dateString = formatter.format(date);
-					String orderNum = goodsType + dateString + email;
+					SimpleDateFormat formatter1 = new SimpleDateFormat("yyyyMMddHHmmss");
+					SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String dateString = formatter2.format(date);
+					String orderNum = goodsType + formatter1.format(date) + email;
 
 					Orders orders = new Orders();
 					orders.setOrderNum(orderNum);
@@ -105,6 +106,7 @@ public class FillOrderActivity extends AppCompatActivity {
 					orders.setBuyerName(buyerName);
 					orders.setBuyerTel(buyerTel);
 					orders.setBuyerAddress(buyerAddress);
+					orders.setTransactionTime(dateString);
 					orders.setTransactionStatus("Trading");     // 设置交易状态为【交易中】
 					orders.save();
 

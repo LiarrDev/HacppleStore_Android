@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
 				switch (item.getItemId()) {
 					case R.id.nav_orders:
-						Intent orderIntent = new Intent(MainActivity.this, FillOrderActivity.class);
+						// TODO: 传 Email 过去，收到 Email 后判断如果是管理员则查出所有记录显示并可操作，如果是用户则根据用户 Email 查出所有该用户的记录显示，用户可取消订单
+						Intent orderIntent = new Intent(MainActivity.this, OrdersActivity.class);
+						orderIntent.putExtra("email", email);
 						startActivity(orderIntent);
 						break;
 
