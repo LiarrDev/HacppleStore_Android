@@ -25,6 +25,8 @@ public class OrdersActivity extends AppCompatActivity {
 
 	String adminEmail = "admin@admin.com";      // 管理员 Email
 
+	String email;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,14 +41,8 @@ public class OrdersActivity extends AppCompatActivity {
 		}
 
 		Intent intent = getIntent();
-		String email = intent.getStringExtra("email");
+		email = intent.getStringExtra("email");
 
-		initOrdersItem(email);
-		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orders_recycler);
-		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-		recyclerView.setLayoutManager(layoutManager);
-		adapter = new OrdersItemAdapter(ordersItemList);
-		recyclerView.setAdapter(adapter);
 	}
 
 	@Override
@@ -59,6 +55,19 @@ public class OrdersActivity extends AppCompatActivity {
 			default:
 		}
 		return true;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// 在这里进行加载是为了及时更新页面数据
+		initOrdersItem(email);
+		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.orders_recycler);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		recyclerView.setLayoutManager(layoutManager);
+		adapter = new OrdersItemAdapter(ordersItemList);
+		recyclerView.setAdapter(adapter);
 	}
 
 	public void initOrdersItem(String email) {
